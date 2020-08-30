@@ -24,5 +24,6 @@ class MusicFile:
     def __str__(self):
         return "{}-{}-{}-{}-{}".format(self.title, self.artist_name, self.album, self.length, self.genre)
 
+
 if __name__ == '__main__':
     print(MusicFile('./music/By Myself.mp3'))

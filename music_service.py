@@ -7,6 +7,7 @@ MUSIC_DIR = "./music"
 
 music_objects = []
 
+
 @app.route('/')
 def is_server_on():
     return "OK"
@@ -19,15 +20,11 @@ def get_all_mp3():
     for i in audio_files:
         print(i)
         music_objects.append(MusicFile(i))
-
-
-
-@app.route('/info')
-def info():
-    a = {
-     "asdasd":123
-    }
-    return jsonify(a)
+    audio_list = []
+    if music_objects:
+        for audio in music_objects:
+            audio_list.append(audio.get_as_dict)
+    return jsonify(audio_list)
 
 
 if __name__ == '__main__':

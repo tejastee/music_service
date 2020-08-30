@@ -1,4 +1,5 @@
 import eyed3
+eyed3.log.setLevel("ERROR")
 
 
 class MusicFile:
@@ -10,16 +11,15 @@ class MusicFile:
         self.album = self.audio_file.tag.album
         self.genre = self.audio_file.tag.genre
         self.length = self.audio_file.info.time_secs
-        print(self.audio_file.info)
 
     def get_as_dict(self):
-        dict = {}
-        dict["title"] = self.title
-        dict["artist_name"] = self.artist_name
-        dict["album"] = self.album
-        dict["genre"] = self.genre
-        dict["length"] = self.length
-        return dict
+        dict_obj = {}
+        dict_obj["title"] = self.title
+        dict_obj["artist_name"] = self.artist_name
+        dict_obj["album"] = self.album
+        dict_obj["genre"] = str(self.genre)
+        dict_obj["length"] = self.length
+        return dict_obj
 
     def __str__(self):
         return "{}-{}-{}-{}-{}".format(self.title, self.artist_name, self.album, self.length, self.genre)

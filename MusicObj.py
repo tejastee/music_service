@@ -26,4 +26,4 @@ class MusicFile:
 
 
 if __name__ == '__main__':
-    print(MusicFile('./music/By Myself.mp3'))
+    print(MusicFile('static/By Myself.mp3'))

@@ -1,1 +1,1 @@
-MUSIC_DIR = "server/music_service/music"
+MUSIC_DIR = "server/music_service/static"

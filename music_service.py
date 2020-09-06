@@ -1,5 +1,4 @@
-
-from flask import Flask,  request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, Response
 from MusicObj import MusicFile
 from constants import MUSIC_DIR
 from random import randint
@@ -9,6 +8,7 @@ app = Flask(__name__)
 
 music_objects = []
 
+
 @app.route('/')
 def is_server_on():
     return "OK"
@@ -16,12 +16,20 @@ def is_server_on():
 
 @app.route('/getstream')
 def get_stream():
+    def generate(path):
+        with open(path, "rb") as fwav:
+            data = fwav.read(1024)
+            while data:
+                yield data
+                data = fwav.read(1024)
+
     if music_objects:
-        random_int = randint(0, len(music_objects)-1)
+        random_int = randint(0, len(music_objects) - 1)
         audio_file = music_objects[random_int]
-        return send_from_directory(os.path.dirname(audio_file.path), os.path.basename(audio_file.path))
+        return Response(generate(audio_file.path), mimetype="audio/mp3")
     else:
-        return jsonify({'error':"Files not init"})
+        return jsonify({'error': "Files not init"})
+
 
 @app.route('/getallmp3')
 def get_all_mp3():
@@ -31,7 +39,8 @@ def get_all_mp3():
     print("Music Folder is {}".format(MUSIC_DIR))
     audio_files = os.listdir(MUSIC_DIR)
     for i in audio_files:
-        music_objects.append(MusicFile(os.path.join(MUSIC_DIR, i)))
+        if i.endswith(".mp3"):
+            music_objects.append(MusicFile(os.path.join(MUSIC_DIR, i)))
     audio_list = []
     if music_objects:
         for audio in music_objects:

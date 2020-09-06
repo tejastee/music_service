@@ -1,18 +1,27 @@
 
-from flask import Flask,  request, jsonify
+from flask import Flask,  request, jsonify, send_from_directory
 from MusicObj import MusicFile
 from constants import MUSIC_DIR
+from random import randint
 import os
 
 app = Flask(__name__)
 
 music_objects = []
 
-
 @app.route('/')
 def is_server_on():
     return "OK"
 
+
+@app.route('/getstream')
+def get_stream():
+    if music_objects:
+        random_int = randint(0, len(music_objects)-1)
+        audio_file = music_objects[random_int]
+        return send_from_directory(os.path.dirname(audio_file.path), os.path.basename(audio_file.path))
+    else:
+        return jsonify({'error':"Files not init"})
 
 @app.route('/getallmp3')
 def get_all_mp3():

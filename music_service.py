@@ -64,6 +64,10 @@ def get_stream():
 #             audio_list.append(audio.get_as_dict())
 #     return jsonify(audio_list)
 
+@app.route('/get_all_db')
+def get_all_files():
+    return jsonify(db.get_all())
+
 
 @app.route('/update_db')
 def update_db():

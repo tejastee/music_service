@@ -62,6 +62,12 @@ class MusicData(MySqlDatabase):
         MySqlDatabase.__init__(self)
         logging.debug("Music Data!")
 
+    def get_all(self):
+        self.cursor.execute("select title, artist_name, album, genre, CAST(length AS CHAR) length, path from music_data")
+        myresult = self.cursor.fetchall()
+        logging.debug(myresult)
+        return myresult
+
     def insert_to_music_data(self, music_object):
         logging.debug("Inserting - {}".format(music_object))
         music_object: MusicFile
@@ -75,4 +81,4 @@ class MusicData(MySqlDatabase):
 
 if __name__ == '__main__':
     db = MusicData()
-    db.insert_to_music_data(["John2", "Highway 21", "That", "Rock", "123.35"])
+    db.get_all()

@@ -5,6 +5,6 @@ MUSIC_DIR = "server/music_service/static"
 #            'password': 'wqsa@12',
 #            'database': 'testdb'}
 DB_CRED = {'host': 'tejastee4.mysql.pythonanywhere-services.com',
-           'Username': 'tejastee4',
+           'user': 'tejastee4',
            'password': 'mysqlpass123',
            'database':'tejastee4$music_service'}

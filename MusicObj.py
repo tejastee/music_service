@@ -9,7 +9,7 @@ class MusicFile:
         self.title = self.audio_file.tag.title
         self.artist_name = self.audio_file.tag.artist
         self.album = self.audio_file.tag.album
-        self.genre = self.audio_file.tag.genre
+        self.genre = str(self.audio_file.tag.genre)
         self.length = self.audio_file.info.time_secs
 
     def get_as_dict(self):

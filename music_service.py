@@ -1,13 +1,31 @@
 from flask import Flask, request, jsonify, send_from_directory, Response
 from MusicObj import MusicFile
-from constants import MUSIC_DIR
+import constants
 from random import randint
 import os
+from database import MusicData
+
 
 app = Flask(__name__)
-
+db = MusicData()
 music_objects = []
 
+
+'''
+
+DB Details  -
+
+Database host address:tejastee4.mysql.pythonanywhere-services.com
+Username:tejastee4
+Password:qazwsx123
+
+CREATE TABLE "Music_data" (
+	"File_name"	TEXT,
+	"Path"	TEXT NOT NULL,
+	PRIMARY KEY("File_name")
+);
+
+'''
 
 @app.route('/')
 def is_server_on():
@@ -31,21 +49,34 @@ def get_stream():
         return jsonify({'error': "Files not init"})
 
 
-@app.route('/getallmp3')
-def get_all_mp3():
-    global music_objects
-    music_objects.clear()
-    # music_directory = os.path.join(os.getcwd(), MUSIC_DIR)
-    print("Music Folder is {}".format(MUSIC_DIR))
-    audio_files = os.listdir(MUSIC_DIR)
+# @app.route('/getallmp3')
+# def get_all_mp3():
+#     global music_objects
+#     music_objects.clear()
+#     print("Music Folder is {}".format(MUSIC_DIR))
+#     audio_files = os.listdir(MUSIC_DIR)
+#     for i in audio_files:
+#         if i.endswith(".mp3"):
+#             music_objects.append(MusicFile(os.path.join(MUSIC_DIR, i)))
+#     audio_list = []
+#     if music_objects:
+#         for audio in music_objects:
+#             audio_list.append(audio.get_as_dict())
+#     return jsonify(audio_list)
+
+
+@app.route('/update_db')
+def update_db():
+    print("Music Folder is {}".format(constants.MUSIC_DIR))
+    audio_files = os.listdir(constants.MUSIC_DIR)
+    files = 0
     for i in audio_files:
         if i.endswith(".mp3"):
-            music_objects.append(MusicFile(os.path.join(MUSIC_DIR, i)))
-    audio_list = []
-    if music_objects:
-        for audio in music_objects:
-            audio_list.append(audio.get_as_dict())
-    return jsonify(audio_list)
+            print(i, constants.MUSIC_DIR)
+            music_obj = MusicFile(os.path.join(constants.MUSIC_DIR, i))
+            db.insert_to_music_data(music_obj)
+            files += 1
+    return jsonify({'Files Inserted' : files})
 
 
 if __name__ == '__main__':
